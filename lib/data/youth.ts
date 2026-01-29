@@ -1,3 +1,67 @@
+export type ExtendedTimelineType =
+  | "enrollment"
+  | "survey"
+  | "session"
+  | "milestone"
+  | "program-change"
+  | "certification"
+  | "opportunity"
+  | "cross-org"
+  | "career"
+  | "education"
+  | "board"
+  | "recognition";
+
+export type OutcomesOverTime = {
+  year: string;
+  belonging: number;
+  confidence: number;
+  connection: number;
+  tryNewThings: number;
+  leadership: number;
+  resilience: number;
+};
+
+export type DigitalResumeItem = {
+  id: string;
+  category: "skill" | "certification" | "achievement" | "experience" | "education";
+  title: string;
+  issuer: string;
+  orgBadge: string;
+  date: string;
+  description: string;
+  verified: boolean;
+};
+
+export type ExtendedTimelineEvent = {
+  id: string;
+  type: ExtendedTimelineType;
+  title: string;
+  description: string;
+  date: string;
+  year: number;
+  organization: string;
+};
+
+export type ExtendedYouthProfile = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  headline: string;
+  currentRole: string;
+  education: string;
+  avatar: string;
+  status: "active" | "graduated" | "inactive" | "alumni";
+  yearsWithStoked: number;
+  programsCount: number;
+  organizationsCount: number;
+  outcomesGrowth: number;
+  organizations: string[];
+  extendedTimeline: ExtendedTimelineEvent[];
+  outcomesOverTime: OutcomesOverTime[];
+  digitalResume: DigitalResumeItem[];
+};
+
 export type YouthMilestone = {
   id: string;
   title: string;
@@ -578,3 +642,334 @@ export const detailedYouth: YouthProfile[] = [
     status: "active",
   },
 ];
+
+export const carlosProfile: ExtendedYouthProfile = {
+  id: "youth-carlos",
+  firstName: "Carlos",
+  lastName: "Mendez",
+  headline:
+    "Met STOKED at 15. Engineer at J&J. Patent holder. Now on the board.",
+  currentRole: "Mechanical Engineer, Johnson & Johnson",
+  education: "BS Mechanical Engineering, UC San Diego (UC Berkeley transfer)",
+  avatar: "CM",
+  status: "alumni",
+  yearsWithStoked: 15,
+  programsCount: 3,
+  organizationsCount: 4,
+  outcomesGrowth: 92,
+  organizations: ["STOKED", "UC Berkeley", "UC San Diego", "Johnson & Johnson"],
+  extendedTimeline: [
+    {
+      id: "ct-1",
+      type: "enrollment",
+      title: "First STOKED Session",
+      description:
+        "Carlos walked into his first skateboarding session at age 15. Shy, skeptical, but curious. A coach noticed him watching from the edge and handed him a board.",
+      date: "2011-09-15",
+      year: 2011,
+      organization: "STOKED",
+    },
+    {
+      id: "ct-2",
+      type: "milestone",
+      title: "Landed First Kickflip",
+      description:
+        "After weeks of falling, Carlos landed his first kickflip. The crew erupted. That moment changed everything about how he saw himself.",
+      date: "2011-11-20",
+      year: 2011,
+      organization: "STOKED",
+    },
+    {
+      id: "ct-3",
+      type: "survey",
+      title: "First Year Outcomes Recorded",
+      description:
+        "Belonging: 3.2, Confidence: 2.8. Low starting point, but engagement was consistent. Coaches noted growing leadership instincts.",
+      date: "2012-06-01",
+      year: 2012,
+      organization: "STOKED",
+    },
+    {
+      id: "ct-4",
+      type: "program-change",
+      title: "Advanced to Launchpad",
+      description:
+        "Moved from Risers to Launchpad skateboarding. Started mentoring younger participants on weekends.",
+      date: "2012-09-10",
+      year: 2012,
+      organization: "STOKED",
+    },
+    {
+      id: "ct-5",
+      type: "recognition",
+      title: "STOKED Ambassador Selected",
+      description:
+        "Selected as one of 5 youth ambassadors. Spoke at a fundraiser in front of 200 people. First time he'd ever spoken publicly.",
+      date: "2013-04-20",
+      year: 2013,
+      organization: "STOKED",
+    },
+    {
+      id: "ct-6",
+      type: "certification",
+      title: "Youth Leadership Certification",
+      description:
+        "Completed STOKED's first youth leadership facilitation program. Now qualified to co-lead sessions.",
+      date: "2014-01-15",
+      year: 2014,
+      organization: "STOKED",
+    },
+    {
+      id: "ct-7",
+      type: "opportunity",
+      title: "Summer STEM Internship",
+      description:
+        "STOKED connected Carlos to a summer engineering internship through a corporate partner. First exposure to professional engineering.",
+      date: "2014-06-15",
+      year: 2014,
+      organization: "STOKED",
+    },
+    {
+      id: "ct-8",
+      type: "education",
+      title: "Accepted to UC Berkeley",
+      description:
+        "Carlos was accepted to UC Berkeley's College of Engineering. STOKED recommendation letter cited his leadership trajectory and growth.",
+      date: "2015-03-28",
+      year: 2015,
+      organization: "UC Berkeley",
+    },
+    {
+      id: "ct-9",
+      type: "cross-org",
+      title: "STOKED Alumni Network Launch",
+      description:
+        "Carlos was one of the founding members of STOKED's alumni network, staying connected while in college.",
+      date: "2015-09-01",
+      year: 2015,
+      organization: "STOKED",
+    },
+    {
+      id: "ct-10",
+      type: "education",
+      title: "Transferred to UC San Diego",
+      description:
+        "Transferred to UCSD for their stronger mechanical engineering program. Maintained alumni involvement remotely.",
+      date: "2017-09-01",
+      year: 2017,
+      organization: "UC San Diego",
+    },
+    {
+      id: "ct-11",
+      type: "milestone",
+      title: "First Engineering Publication",
+      description:
+        "Co-authored a paper on sustainable materials in the UCSD engineering journal. Applied lessons from STOKED's environmental stewardship program.",
+      date: "2018-05-15",
+      year: 2018,
+      organization: "UC San Diego",
+    },
+    {
+      id: "ct-12",
+      type: "education",
+      title: "BS Mechanical Engineering",
+      description:
+        "Graduated from UC San Diego with honors. First in his family to earn a college degree.",
+      date: "2019-06-14",
+      year: 2019,
+      organization: "UC San Diego",
+    },
+    {
+      id: "ct-13",
+      type: "career",
+      title: "Joined Johnson & Johnson",
+      description:
+        "Hired as a mechanical engineer at Johnson & Johnson's medical devices division. The STEM internship from 2014 was the connection.",
+      date: "2019-08-01",
+      year: 2019,
+      organization: "Johnson & Johnson",
+    },
+    {
+      id: "ct-14",
+      type: "recognition",
+      title: "STOKED 10-Year Impact Story",
+      description:
+        "Featured in STOKED's annual report as a 10-year success story. Spoke at the gala about the power of mentorship.",
+      date: "2021-11-15",
+      year: 2021,
+      organization: "STOKED",
+    },
+    {
+      id: "ct-15",
+      type: "career",
+      title: "First Patent Filed",
+      description:
+        "Co-inventor on a patent for a novel surgical instrument mechanism. Engineering meets impact.",
+      date: "2022-03-10",
+      year: 2022,
+      organization: "Johnson & Johnson",
+    },
+    {
+      id: "ct-16",
+      type: "career",
+      title: "Patent Granted",
+      description:
+        "US Patent #11,234,567 granted. A minimally invasive surgical tool that reduces recovery time by 30%.",
+      date: "2023-01-20",
+      year: 2023,
+      organization: "Johnson & Johnson",
+    },
+    {
+      id: "ct-17",
+      type: "cross-org",
+      title: "Started Mentoring STOKED Youth Remotely",
+      description:
+        "Began virtual mentoring sessions with current STOKED participants. Sharing his engineering journey.",
+      date: "2023-06-01",
+      year: 2023,
+      organization: "STOKED",
+    },
+    {
+      id: "ct-18",
+      type: "recognition",
+      title: "J&J Innovation Award",
+      description:
+        "Received Johnson & Johnson's internal innovation award for contributions to surgical device development.",
+      date: "2024-09-15",
+      year: 2024,
+      organization: "Johnson & Johnson",
+    },
+    {
+      id: "ct-19",
+      type: "board",
+      title: "Joined STOKED Board of Directors",
+      description:
+        "Invited to join the STOKED board. Full circle: from youth participant to board member, shaping the organization's future.",
+      date: "2025-01-15",
+      year: 2025,
+      organization: "STOKED",
+    },
+    {
+      id: "ct-20",
+      type: "milestone",
+      title: "15-Year STOKED Anniversary",
+      description:
+        "Fifteen years since Carlos first picked up a skateboard at STOKED. Engineer, patent holder, board member. The pipeline is real.",
+      date: "2026-01-15",
+      year: 2026,
+      organization: "STOKED",
+    },
+  ],
+  outcomesOverTime: [
+    { year: "2011", belonging: 2.5, confidence: 2.3, connection: 2.4, tryNewThings: 2.6, leadership: 1.8, resilience: 2.2 },
+    { year: "2012", belonging: 3.2, confidence: 2.8, connection: 3.0, tryNewThings: 3.3, leadership: 2.4, resilience: 2.8 },
+    { year: "2013", belonging: 3.8, confidence: 3.4, connection: 3.5, tryNewThings: 3.8, leadership: 3.2, resilience: 3.4 },
+    { year: "2014", belonging: 4.0, confidence: 3.8, connection: 3.9, tryNewThings: 4.1, leadership: 3.8, resilience: 3.7 },
+    { year: "2015", belonging: 4.2, confidence: 4.0, connection: 4.1, tryNewThings: 4.3, leadership: 4.0, resilience: 4.0 },
+    { year: "2019", belonging: 4.5, confidence: 4.4, connection: 4.3, tryNewThings: 4.5, leadership: 4.4, resilience: 4.5 },
+    { year: "2023", belonging: 4.7, confidence: 4.6, connection: 4.5, tryNewThings: 4.7, leadership: 4.7, resilience: 4.7 },
+    { year: "2026", belonging: 4.8, confidence: 4.8, connection: 4.7, tryNewThings: 4.8, leadership: 4.9, resilience: 4.8 },
+  ],
+  digitalResume: [
+    {
+      id: "dr-1",
+      category: "certification",
+      title: "Youth Leadership Facilitator",
+      issuer: "STOKED",
+      orgBadge: "STOKED",
+      date: "2014",
+      description: "Certified to co-lead youth sessions and workshops.",
+      verified: true,
+    },
+    {
+      id: "dr-2",
+      category: "achievement",
+      title: "STOKED Ambassador",
+      issuer: "STOKED",
+      orgBadge: "STOKED",
+      date: "2013",
+      description: "Selected as youth ambassador representing STOKED at public events.",
+      verified: true,
+    },
+    {
+      id: "dr-3",
+      category: "education",
+      title: "BS Mechanical Engineering (Honors)",
+      issuer: "UC San Diego",
+      orgBadge: "UCSD",
+      date: "2019",
+      description: "First-generation college graduate. Transferred from UC Berkeley.",
+      verified: true,
+    },
+    {
+      id: "dr-4",
+      category: "experience",
+      title: "Mechanical Engineer",
+      issuer: "Johnson & Johnson",
+      orgBadge: "J&J",
+      date: "2019 - Present",
+      description: "Medical devices division. Focus on minimally invasive surgical tools.",
+      verified: true,
+    },
+    {
+      id: "dr-5",
+      category: "achievement",
+      title: "US Patent #11,234,567",
+      issuer: "United States Patent Office",
+      orgBadge: "USPTO",
+      date: "2023",
+      description: "Co-inventor of a surgical instrument reducing recovery time by 30%.",
+      verified: true,
+    },
+    {
+      id: "dr-6",
+      category: "achievement",
+      title: "J&J Innovation Award",
+      issuer: "Johnson & Johnson",
+      orgBadge: "J&J",
+      date: "2024",
+      description: "Internal recognition for contributions to surgical device development.",
+      verified: true,
+    },
+    {
+      id: "dr-7",
+      category: "skill",
+      title: "Skateboarding & Action Sports",
+      issuer: "STOKED",
+      orgBadge: "STOKED",
+      date: "2011",
+      description: "Advanced skateboarding. Completed Risers, Launchpad, and Pathways programs.",
+      verified: true,
+    },
+    {
+      id: "dr-8",
+      category: "experience",
+      title: "Board Member",
+      issuer: "STOKED",
+      orgBadge: "STOKED",
+      date: "2025 - Present",
+      description: "Serving on the board of directors, shaping organizational strategy.",
+      verified: true,
+    },
+    {
+      id: "dr-9",
+      category: "certification",
+      title: "STOKED Mentor Certified",
+      issuer: "STOKED",
+      orgBadge: "STOKED",
+      date: "2023",
+      description: "Completed Mentor 101 to virtually mentor current participants.",
+      verified: true,
+    },
+    {
+      id: "dr-10",
+      category: "education",
+      title: "Engineering (Transfer)",
+      issuer: "UC Berkeley",
+      orgBadge: "UCB",
+      date: "2015 - 2017",
+      description: "Began engineering studies at UC Berkeley before transferring to UCSD.",
+      verified: true,
+    },
+  ],
+};

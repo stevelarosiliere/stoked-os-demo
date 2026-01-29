@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
   Card,
@@ -11,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ArrowLeft,
   Star,
@@ -23,10 +26,16 @@ import {
   Calendar,
   User,
   BookOpen,
+  Briefcase,
+  GraduationCap,
 } from "lucide-react";
+import { carlosProfile } from "@/lib/data/youth";
+import { YearGroupTimeline } from "@/components/youth/year-group-timeline";
+import { OutcomeTrendChart } from "@/components/youth/outcome-trend-chart";
+import { DigitalResume } from "@/components/youth/digital-resume";
 
 // ---------------------------------------------------------------------------
-// Static data — in production this would come from an API / database
+// Static data for short-arc (Marcus) — same as original
 // ---------------------------------------------------------------------------
 
 const youth = {
@@ -204,11 +213,296 @@ function scoreToPct(score: number) {
   return (score / 5) * 100;
 }
 
+const orgBadgeColors: Record<string, string> = {
+  STOKED: "bg-[#E8F8F4] text-[#1AB394]",
+  "UC Berkeley": "bg-blue-50 text-blue-700",
+  "UC San Diego": "bg-amber-50 text-amber-700",
+  "Johnson & Johnson": "bg-rose-50 text-rose-700",
+};
+
 // ---------------------------------------------------------------------------
-// Component
+// Carlos Layout (Long-arc, 15-year profile)
 // ---------------------------------------------------------------------------
 
-export default function YouthProfilePage() {
+function CarlosLayout() {
+  const carlos = carlosProfile;
+  const [activeTab, setActiveTab] = useState("journey");
+
+  const firstOutcome = carlos.outcomesOverTime[0];
+  const lastOutcome = carlos.outcomesOverTime[carlos.outcomesOverTime.length - 1];
+
+  return (
+    <div className="space-y-6">
+      <Link
+        href="/partners"
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 hover:text-[#1AB394] transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Partners
+      </Link>
+
+      {/* Profile Header */}
+      <Card className="rounded-xl shadow-sm border bg-gradient-to-r from-[#1AB394]/10 to-purple-500/5 p-6">
+        <div className="flex items-start gap-5">
+          <Avatar className="h-20 w-20 text-xl flex-shrink-0">
+            <AvatarFallback className="bg-[#1AB394] text-white font-heading font-bold text-2xl">
+              {carlos.avatar}
+            </AvatarFallback>
+          </Avatar>
+
+          <div className="flex-1 space-y-2">
+            <div className="flex items-center gap-3 flex-wrap">
+              <h1 className="text-2xl font-heading font-bold text-slate-900">
+                {carlos.firstName} {carlos.lastName}
+              </h1>
+              <Badge className="bg-purple-50 text-purple-700 border-0 text-xs">
+                Alumni
+              </Badge>
+              <Badge className="bg-amber-50 text-amber-700 border-0 text-xs">
+                Board Member
+              </Badge>
+            </div>
+
+            <p className="text-base font-medium text-slate-700 italic">
+              &ldquo;{carlos.headline}&rdquo;
+            </p>
+
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-500">
+              <span className="flex items-center gap-1">
+                <Briefcase className="h-3.5 w-3.5" />
+                {carlos.currentRole}
+              </span>
+              <span className="flex items-center gap-1">
+                <GraduationCap className="h-3.5 w-3.5" />
+                {carlos.education}
+              </span>
+            </div>
+
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              {carlos.organizations.map((org) => (
+                <Badge
+                  key={org}
+                  className={`${
+                    orgBadgeColors[org] || "bg-slate-100 text-slate-600"
+                  } border-0 text-xs`}
+                >
+                  {org}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* KPI Row */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card className="p-4 rounded-xl shadow-sm border bg-white">
+          <p className="text-sm text-slate-500">Years with STOKED</p>
+          <p className="text-2xl font-heading font-bold text-slate-900">
+            {carlos.yearsWithStoked}
+          </p>
+        </Card>
+        <Card className="p-4 rounded-xl shadow-sm border bg-white">
+          <p className="text-sm text-slate-500">Programs</p>
+          <p className="text-2xl font-heading font-bold text-slate-900">
+            {carlos.programsCount}
+          </p>
+        </Card>
+        <Card className="p-4 rounded-xl shadow-sm border bg-white">
+          <p className="text-sm text-slate-500">Organizations</p>
+          <p className="text-2xl font-heading font-bold text-slate-900">
+            {carlos.organizationsCount}
+          </p>
+        </Card>
+        <Card className="p-4 rounded-xl shadow-sm border bg-white">
+          <p className="text-sm text-slate-500">Outcomes Growth</p>
+          <p className="text-2xl font-heading font-bold text-[#1AB394]">
+            +{carlos.outcomesGrowth}%
+          </p>
+        </Card>
+      </div>
+
+      {/* Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList>
+          <TabsTrigger value="journey">Journey</TabsTrigger>
+          <TabsTrigger value="outcomes">Outcomes</TabsTrigger>
+          <TabsTrigger value="resume">Digital Resume</TabsTrigger>
+          <TabsTrigger value="timeline">Timeline</TabsTrigger>
+        </TabsList>
+
+        {/* Journey Tab */}
+        <TabsContent value="journey">
+          <Card className="rounded-xl shadow-sm border bg-white p-6">
+            <CardHeader className="p-0 pb-4">
+              <CardTitle className="text-base font-heading font-semibold text-slate-900">
+                15-Year Journey
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <YearGroupTimeline events={carlos.extendedTimeline} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Outcomes Tab */}
+        <TabsContent value="outcomes">
+          <div className="space-y-6">
+            <Card className="rounded-xl shadow-sm border bg-white p-6">
+              <CardHeader className="p-0 pb-4">
+                <CardTitle className="text-base font-heading font-semibold text-slate-900">
+                  Outcomes Over 15 Years (2011 - 2026)
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <OutcomeTrendChart data={carlos.outcomesOverTime} />
+              </CardContent>
+            </Card>
+
+            {/* Growth summary cards */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+              {(["belonging", "confidence", "connection", "tryNewThings", "leadership", "resilience"] as const).map(
+                (metric) => {
+                  const start = firstOutcome[metric];
+                  const end = lastOutcome[metric];
+                  const growth = ((end - start) / start * 100).toFixed(0);
+                  const labels: Record<string, string> = {
+                    belonging: "Belonging",
+                    confidence: "Confidence",
+                    connection: "Connection",
+                    tryNewThings: "Try New Things",
+                    leadership: "Leadership",
+                    resilience: "Resilience",
+                  };
+                  return (
+                    <Card key={metric} className="p-3 rounded-xl shadow-sm border bg-white">
+                      <p className="text-xs text-slate-400">{labels[metric]}</p>
+                      <p className="text-lg font-heading font-bold text-slate-900">
+                        {start} &rarr; {end}
+                      </p>
+                      <p className="text-xs font-medium text-[#1AB394]">
+                        +{growth}%
+                      </p>
+                    </Card>
+                  );
+                }
+              )}
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Digital Resume Tab */}
+        <TabsContent value="resume">
+          <Card className="rounded-xl shadow-sm border bg-white p-6">
+            <CardHeader className="p-0 pb-4">
+              <CardTitle className="text-base font-heading font-semibold text-slate-900">
+                Digital Resume
+              </CardTitle>
+              <p className="text-sm text-slate-500 mt-1">
+                Verified credentials across organizations. This follows him everywhere.
+              </p>
+            </CardHeader>
+            <CardContent className="p-0">
+              <DigitalResume items={carlos.digitalResume} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Timeline Tab (simple vertical) */}
+        <TabsContent value="timeline">
+          <Card className="rounded-xl shadow-sm border bg-white p-6">
+            <CardHeader className="p-0 pb-5">
+              <CardTitle className="text-base font-heading font-semibold text-slate-900">
+                Full Timeline ({carlos.extendedTimeline.length} Events)
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="relative pl-8">
+                <div className="absolute left-[9px] top-2 bottom-2 w-0.5 bg-slate-200" />
+                <div className="space-y-6">
+                  {carlos.extendedTimeline.map((event) => {
+                    const dotColor: Record<string, string> = {
+                      enrollment: "bg-[#1AB394]",
+                      survey: "bg-amber-400",
+                      session: "bg-[#1AB394]",
+                      milestone: "bg-purple-500",
+                      "program-change": "bg-blue-500",
+                      certification: "bg-emerald-500",
+                      opportunity: "bg-cyan-500",
+                      "cross-org": "bg-indigo-500",
+                      career: "bg-rose-500",
+                      education: "bg-orange-500",
+                      board: "bg-violet-500",
+                      recognition: "bg-pink-500",
+                    };
+                    const ringColor: Record<string, string> = {
+                      enrollment: "ring-[#E8F8F4]",
+                      survey: "ring-amber-100",
+                      session: "ring-[#E8F8F4]",
+                      milestone: "ring-purple-100",
+                      "program-change": "ring-blue-100",
+                      certification: "ring-emerald-100",
+                      opportunity: "ring-cyan-100",
+                      "cross-org": "ring-indigo-100",
+                      career: "ring-rose-100",
+                      education: "ring-orange-100",
+                      board: "ring-violet-100",
+                      recognition: "ring-pink-100",
+                    };
+                    return (
+                      <div key={event.id} className="relative flex gap-4">
+                        <div
+                          className={`absolute -left-8 top-1 h-[18px] w-[18px] rounded-full ring-4 ${
+                            dotColor[event.type] || "bg-slate-400"
+                          } ${
+                            ringColor[event.type] || "ring-slate-100"
+                          } flex items-center justify-center`}
+                        >
+                          <span className="h-2 w-2 rounded-full bg-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-medium text-slate-400 mb-0.5">
+                            {new Date(event.date).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            })}
+                          </p>
+                          <div className="flex items-center gap-2">
+                            <p className="text-sm font-semibold text-slate-800">
+                              {event.title}
+                            </p>
+                            <Badge
+                              className={`${
+                                orgBadgeColors[event.organization] ||
+                                "bg-slate-100 text-slate-600"
+                              } border-0 text-[10px]`}
+                            >
+                              {event.organization}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-slate-500 mt-0.5">
+                            {event.description}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Marcus Layout (Short-arc, existing layout preserved)
+// ---------------------------------------------------------------------------
+
+function MarcusLayout() {
   return (
     <div className="space-y-6">
       {/* Back link */}
@@ -569,4 +863,20 @@ export default function YouthProfilePage() {
       </div>
     </div>
   );
+}
+
+// ---------------------------------------------------------------------------
+// Main Component — routes between layouts
+// ---------------------------------------------------------------------------
+
+export default function YouthProfilePage() {
+  const params = useParams();
+  const id = params.id as string;
+
+  if (id === "youth-carlos") {
+    return <CarlosLayout />;
+  }
+
+  // Default: Marcus / short-arc layout
+  return <MarcusLayout />;
 }

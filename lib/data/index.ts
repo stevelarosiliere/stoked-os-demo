@@ -5,3 +5,5 @@ export * from './youth';
 export * from './outcomes';
 export * from './attendance';
 export * from './activity';
+export * from './training';
+export * from './mentors';

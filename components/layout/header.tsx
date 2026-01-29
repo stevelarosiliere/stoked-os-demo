@@ -8,6 +8,8 @@ const pageTitles: Record<string, string> = {
   "/partners": "Partner Schools",
   "/programs": "Programs",
   "/coaches": "Coach Management",
+  "/training": "Mentor Training",
+  "/mentors": "Mentor Network",
   "/outcomes": "Outcomes & Impact",
   "/admin": "Platform Administration",
 };
@@ -17,6 +19,9 @@ export function Header() {
 
   const getTitle = () => {
     if (pathname.startsWith("/partners/")) return "Partner Detail";
+    if (pathname.startsWith("/training/")) return "Training Module";
+    if (pathname.startsWith("/mentors/matching")) return "Mentor Matching";
+    if (pathname.startsWith("/mentors/")) return "Mentor Profile";
     if (pathname.startsWith("/youth/")) return "Youth Journey";
     return pageTitles[pathname] || "STOKED OS";
   };

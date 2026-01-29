@@ -11,6 +11,8 @@ import {
   BookOpen,
   Shield,
   Settings,
+  GraduationCap,
+  Heart,
 } from "lucide-react";
 
 const navItems = [
@@ -18,6 +20,8 @@ const navItems = [
   { href: "/partners", label: "Partners", icon: Building2 },
   { href: "/programs", label: "Programs", icon: BookOpen },
   { href: "/coaches", label: "Coaches", icon: Users },
+  { href: "/training", label: "Training", icon: GraduationCap },
+  { href: "/mentors", label: "Mentors", icon: Heart },
   { href: "/outcomes", label: "Outcomes", icon: BarChart3 },
   { href: "/admin", label: "Platform", icon: Shield },
 ];
