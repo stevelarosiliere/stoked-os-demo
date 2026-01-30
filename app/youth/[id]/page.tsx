@@ -26,10 +26,8 @@ import {
   Calendar,
   User,
   BookOpen,
-  Briefcase,
-  GraduationCap,
 } from "lucide-react";
-import { carlosProfile } from "@/lib/data/youth";
+import { jordanProfile } from "@/lib/data/youth";
 import { YearGroupTimeline } from "@/components/youth/year-group-timeline";
 import { OutcomeTrendChart } from "@/components/youth/outcome-trend-chart";
 import { DigitalResume } from "@/components/youth/digital-resume";
@@ -213,23 +211,23 @@ function scoreToPct(score: number) {
   return (score / 5) * 100;
 }
 
-const orgBadgeColors: Record<string, string> = {
-  STOKED: "bg-[#E8F8F4] text-[#1AB394]",
-  "UC Berkeley": "bg-blue-50 text-blue-700",
-  "UC San Diego": "bg-amber-50 text-amber-700",
-  "Johnson & Johnson": "bg-rose-50 text-rose-700",
+const progStageColors: Record<string, string> = {
+  Risers: "bg-[#E8F8F4] text-[#1AB394] border-[#1AB394]",
+  Launchpad: "bg-blue-50 text-blue-700 border-blue-400",
+  Pathways: "bg-purple-50 text-purple-700 border-purple-400",
+  "Mentor Corps": "bg-amber-50 text-amber-700 border-amber-400",
 };
 
 // ---------------------------------------------------------------------------
-// Carlos Layout (Long-arc, 15-year profile)
+// Jordan Layout (4-year active profile, visual resume for funders)
 // ---------------------------------------------------------------------------
 
-function CarlosLayout() {
-  const carlos = carlosProfile;
-  const [activeTab, setActiveTab] = useState("journey");
+function JordanLayout() {
+  const j = jordanProfile;
+  const [activeTab, setActiveTab] = useState("overview");
 
-  const firstOutcome = carlos.outcomesOverTime[0];
-  const lastOutcome = carlos.outcomesOverTime[carlos.outcomesOverTime.length - 1];
+  const firstOutcome = j.outcomesOverTime[0];
+  const lastOutcome = j.outcomesOverTime[j.outcomesOverTime.length - 1];
 
   return (
     <div className="space-y-6">
@@ -242,107 +240,161 @@ function CarlosLayout() {
       </Link>
 
       {/* Profile Header */}
-      <Card className="rounded-xl shadow-sm border bg-gradient-to-r from-[#1AB394]/10 to-purple-500/5 p-6">
+      <Card className="rounded-xl shadow-sm border bg-gradient-to-r from-[#1AB394]/10 to-[#1AB394]/5 p-6">
         <div className="flex items-start gap-5">
           <Avatar className="h-20 w-20 text-xl flex-shrink-0">
             <AvatarFallback className="bg-[#1AB394] text-white font-heading font-bold text-2xl">
-              {carlos.avatar}
+              {j.avatar}
             </AvatarFallback>
           </Avatar>
 
           <div className="flex-1 space-y-2">
             <div className="flex items-center gap-3 flex-wrap">
               <h1 className="text-2xl font-heading font-bold text-slate-900">
-                {carlos.firstName} {carlos.lastName}
+                {j.firstName} {j.lastName}
               </h1>
-              <Badge className="bg-purple-50 text-purple-700 border-0 text-xs">
-                Alumni
+              <Badge className="bg-[#22C55E]/10 text-[#22C55E] border-[#22C55E]/20 text-xs">
+                Active
               </Badge>
               <Badge className="bg-amber-50 text-amber-700 border-0 text-xs">
-                Board Member
+                Mentor Corps
+              </Badge>
+              <Badge className="bg-purple-50 text-purple-700 border-0 text-xs">
+                Year 4
               </Badge>
             </div>
 
-            <p className="text-base font-medium text-slate-700 italic">
-              &ldquo;{carlos.headline}&rdquo;
+            <p className="text-base font-medium text-slate-700">
+              {j.headline}
             </p>
 
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-500">
               <span className="flex items-center gap-1">
-                <Briefcase className="h-3.5 w-3.5" />
-                {carlos.currentRole}
+                <User className="h-3.5 w-3.5" />
+                Age {j.age}, Grade {j.grade}
               </span>
               <span className="flex items-center gap-1">
-                <GraduationCap className="h-3.5 w-3.5" />
-                {carlos.education}
+                <BookOpen className="h-3.5 w-3.5" />
+                {j.school}
               </span>
-            </div>
-
-            <div className="flex flex-wrap gap-1.5 pt-1">
-              {carlos.organizations.map((org) => (
-                <Badge
-                  key={org}
-                  className={`${
-                    orgBadgeColors[org] || "bg-slate-100 text-slate-600"
-                  } border-0 text-xs`}
-                >
-                  {org}
-                </Badge>
-              ))}
+              <span className="flex items-center gap-1">
+                <Calendar className="h-3.5 w-3.5" />
+                With STOKED since Sept 2022
+              </span>
+              <span className="flex items-center gap-1">
+                <Heart className="h-3.5 w-3.5" />
+                Mentor: {j.mentorName} (since {j.mentorSince})
+              </span>
             </div>
           </div>
         </div>
       </Card>
 
       {/* KPI Row */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <Card className="p-4 rounded-xl shadow-sm border bg-white">
-          <p className="text-sm text-slate-500">Years with STOKED</p>
-          <p className="text-2xl font-heading font-bold text-slate-900">
-            {carlos.yearsWithStoked}
-          </p>
+          <p className="text-sm text-slate-500">Years</p>
+          <p className="text-2xl font-heading font-bold text-slate-900">{j.yearsWithStoked}</p>
         </Card>
         <Card className="p-4 rounded-xl shadow-sm border bg-white">
           <p className="text-sm text-slate-500">Programs</p>
-          <p className="text-2xl font-heading font-bold text-slate-900">
-            {carlos.programsCount}
-          </p>
+          <p className="text-2xl font-heading font-bold text-slate-900">{j.programsCount}</p>
         </Card>
         <Card className="p-4 rounded-xl shadow-sm border bg-white">
-          <p className="text-sm text-slate-500">Organizations</p>
-          <p className="text-2xl font-heading font-bold text-slate-900">
-            {carlos.organizationsCount}
-          </p>
+          <p className="text-sm text-slate-500">Sessions</p>
+          <p className="text-2xl font-heading font-bold text-slate-900">{j.totalSessions}</p>
+        </Card>
+        <Card className="p-4 rounded-xl shadow-sm border bg-white">
+          <p className="text-sm text-slate-500">Service Hours</p>
+          <p className="text-2xl font-heading font-bold text-[#1AB394]">{j.communityServiceHours}</p>
         </Card>
         <Card className="p-4 rounded-xl shadow-sm border bg-white">
           <p className="text-sm text-slate-500">Outcomes Growth</p>
-          <p className="text-2xl font-heading font-bold text-[#1AB394]">
-            +{carlos.outcomesGrowth}%
-          </p>
+          <p className="text-2xl font-heading font-bold text-[#1AB394]">+{j.outcomesGrowth}%</p>
         </Card>
       </div>
+
+      {/* Program Progression Bar */}
+      <Card className="rounded-xl shadow-sm border bg-white p-6">
+        <h3 className="text-sm font-heading font-semibold text-slate-900 mb-4">
+          Program Progression
+        </h3>
+        <div className="flex items-center gap-2 overflow-x-auto">
+          {j.programProgression.map((stage, idx) => (
+            <div key={idx} className="flex items-center gap-2 flex-shrink-0">
+              <div
+                className={`px-4 py-2 rounded-lg border-2 ${
+                  progStageColors[stage.name] || "bg-slate-50 text-slate-600 border-slate-300"
+                } ${stage.status === "active" ? "ring-2 ring-offset-2 ring-[#1AB394]" : ""}`}
+              >
+                <p className="text-sm font-semibold">{stage.name}</p>
+                <p className="text-[10px] opacity-70">{stage.sport}</p>
+                <p className="text-[10px] opacity-70">{stage.year}</p>
+              </div>
+              {idx < j.programProgression.length - 1 && (
+                <div className="w-6 h-0.5 bg-slate-300 flex-shrink-0" />
+              )}
+            </div>
+          ))}
+        </div>
+      </Card>
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
-          <TabsTrigger value="journey">Journey</TabsTrigger>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="outcomes">Outcomes</TabsTrigger>
-          <TabsTrigger value="resume">Digital Resume</TabsTrigger>
-          <TabsTrigger value="timeline">Timeline</TabsTrigger>
+          <TabsTrigger value="resume">Visual Resume</TabsTrigger>
+          <TabsTrigger value="journey">Full Journey</TabsTrigger>
         </TabsList>
 
-        {/* Journey Tab */}
-        <TabsContent value="journey">
-          <Card className="rounded-xl shadow-sm border bg-white p-6">
-            <CardHeader className="p-0 pb-4">
-              <CardTitle className="text-base font-heading font-semibold text-slate-900">
-                15-Year Journey
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
-              <YearGroupTimeline events={carlos.extendedTimeline} />
-            </CardContent>
-          </Card>
+        {/* Overview Tab: the "pull this up in a funder meeting" view */}
+        <TabsContent value="overview">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Outcomes snapshot */}
+            <Card className="rounded-xl shadow-sm border bg-white p-6">
+              <CardHeader className="p-0 pb-4">
+                <CardTitle className="text-base font-heading font-semibold text-slate-900">
+                  4-Year Outcomes Growth
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <OutcomeTrendChart data={j.outcomesOverTime} />
+              </CardContent>
+            </Card>
+
+            {/* Key accomplishments */}
+            <Card className="rounded-xl shadow-sm border bg-white p-6">
+              <CardHeader className="p-0 pb-4">
+                <CardTitle className="text-base font-heading font-semibold text-slate-900">
+                  Key Accomplishments
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="space-y-3">
+                  {[
+                    { icon: "🎤", text: "Spoke at annual fundraiser (300 people)", year: "2025" },
+                    { icon: "👥", text: "Peer mentored 3 Risers youth, all completed", year: "2025" },
+                    { icon: "🏆", text: "Selected as STOKED Ambassador", year: "2024" },
+                    { icon: "📋", text: "Youth Leadership Facilitator Certified", year: "2024" },
+                    { icon: "🤝", text: "Taught skateboarding at Boys & Girls Club", year: "2024" },
+                    { icon: "💼", text: "First job at Homage Brooklyn (STOKED network)", year: "2025" },
+                    { icon: "🏥", text: "CPR & First Aid Certified (Red Cross)", year: "2025" },
+                    { icon: "⏱️", text: "210 verified community service hours", year: "2022-26" },
+                    { icon: "🎓", text: "College applications submitted (6 schools)", year: "2026" },
+                  ].map((item, idx) => (
+                    <div key={idx} className="flex items-start gap-3">
+                      <span className="text-base flex-shrink-0 mt-0.5">{item.icon}</span>
+                      <div className="flex-1">
+                        <p className="text-sm text-slate-700">{item.text}</p>
+                      </div>
+                      <span className="text-xs text-slate-400 flex-shrink-0">{item.year}</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
 
         {/* Outcomes Tab */}
@@ -351,15 +403,17 @@ function CarlosLayout() {
             <Card className="rounded-xl shadow-sm border bg-white p-6">
               <CardHeader className="p-0 pb-4">
                 <CardTitle className="text-base font-heading font-semibold text-slate-900">
-                  Outcomes Over 15 Years (2011 - 2026)
+                  Outcomes Over 4 Years (Fall 2022 - Jan 2026)
                 </CardTitle>
+                <p className="text-sm text-slate-500 mt-1">
+                  8 measurement points across 4 program years. Note the slight dips each fall (summer gap) followed by recovery. That pattern is real, and the overall trajectory speaks for itself.
+                </p>
               </CardHeader>
               <CardContent className="p-0">
-                <OutcomeTrendChart data={carlos.outcomesOverTime} />
+                <OutcomeTrendChart data={j.outcomesOverTime} />
               </CardContent>
             </Card>
 
-            {/* Growth summary cards */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
               {(["belonging", "confidence", "connection", "tryNewThings", "leadership", "resilience"] as const).map(
                 (metric) => {
@@ -380,9 +434,7 @@ function CarlosLayout() {
                       <p className="text-lg font-heading font-bold text-slate-900">
                         {start} &rarr; {end}
                       </p>
-                      <p className="text-xs font-medium text-[#1AB394]">
-                        +{growth}%
-                      </p>
+                      <p className="text-xs font-medium text-[#1AB394]">+{growth}%</p>
                     </Card>
                   );
                 }
@@ -391,105 +443,33 @@ function CarlosLayout() {
           </div>
         </TabsContent>
 
-        {/* Digital Resume Tab */}
+        {/* Visual Resume Tab */}
         <TabsContent value="resume">
           <Card className="rounded-xl shadow-sm border bg-white p-6">
             <CardHeader className="p-0 pb-4">
               <CardTitle className="text-base font-heading font-semibold text-slate-900">
-                Digital Resume
+                Visual Resume
               </CardTitle>
               <p className="text-sm text-slate-500 mt-1">
-                Verified credentials across organizations. This follows him everywhere.
+                Every credential, skill, and accomplishment, verified and documented. This is what 4 years of STOKED builds.
               </p>
             </CardHeader>
             <CardContent className="p-0">
-              <DigitalResume items={carlos.digitalResume} />
+              <DigitalResume items={j.digitalResume} />
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Timeline Tab (simple vertical) */}
-        <TabsContent value="timeline">
+        {/* Full Journey Tab */}
+        <TabsContent value="journey">
           <Card className="rounded-xl shadow-sm border bg-white p-6">
-            <CardHeader className="p-0 pb-5">
+            <CardHeader className="p-0 pb-4">
               <CardTitle className="text-base font-heading font-semibold text-slate-900">
-                Full Timeline ({carlos.extendedTimeline.length} Events)
+                Full Journey ({j.extendedTimeline.length} Events, 4 Years)
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="relative pl-8">
-                <div className="absolute left-[9px] top-2 bottom-2 w-0.5 bg-slate-200" />
-                <div className="space-y-6">
-                  {carlos.extendedTimeline.map((event) => {
-                    const dotColor: Record<string, string> = {
-                      enrollment: "bg-[#1AB394]",
-                      survey: "bg-amber-400",
-                      session: "bg-[#1AB394]",
-                      milestone: "bg-purple-500",
-                      "program-change": "bg-blue-500",
-                      certification: "bg-emerald-500",
-                      opportunity: "bg-cyan-500",
-                      "cross-org": "bg-indigo-500",
-                      career: "bg-rose-500",
-                      education: "bg-orange-500",
-                      board: "bg-violet-500",
-                      recognition: "bg-pink-500",
-                    };
-                    const ringColor: Record<string, string> = {
-                      enrollment: "ring-[#E8F8F4]",
-                      survey: "ring-amber-100",
-                      session: "ring-[#E8F8F4]",
-                      milestone: "ring-purple-100",
-                      "program-change": "ring-blue-100",
-                      certification: "ring-emerald-100",
-                      opportunity: "ring-cyan-100",
-                      "cross-org": "ring-indigo-100",
-                      career: "ring-rose-100",
-                      education: "ring-orange-100",
-                      board: "ring-violet-100",
-                      recognition: "ring-pink-100",
-                    };
-                    return (
-                      <div key={event.id} className="relative flex gap-4">
-                        <div
-                          className={`absolute -left-8 top-1 h-[18px] w-[18px] rounded-full ring-4 ${
-                            dotColor[event.type] || "bg-slate-400"
-                          } ${
-                            ringColor[event.type] || "ring-slate-100"
-                          } flex items-center justify-center`}
-                        >
-                          <span className="h-2 w-2 rounded-full bg-white" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs font-medium text-slate-400 mb-0.5">
-                            {new Date(event.date).toLocaleDateString("en-US", {
-                              month: "short",
-                              day: "numeric",
-                              year: "numeric",
-                            })}
-                          </p>
-                          <div className="flex items-center gap-2">
-                            <p className="text-sm font-semibold text-slate-800">
-                              {event.title}
-                            </p>
-                            <Badge
-                              className={`${
-                                orgBadgeColors[event.organization] ||
-                                "bg-slate-100 text-slate-600"
-                              } border-0 text-[10px]`}
-                            >
-                              {event.organization}
-                            </Badge>
-                          </div>
-                          <p className="text-sm text-slate-500 mt-0.5">
-                            {event.description}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+              <YearGroupTimeline events={j.extendedTimeline} />
             </CardContent>
           </Card>
         </TabsContent>
@@ -873,8 +853,8 @@ export default function YouthProfilePage() {
   const params = useParams();
   const id = params.id as string;
 
-  if (id === "youth-carlos") {
-    return <CarlosLayout />;
+  if (id === "youth-jordan") {
+    return <JordanLayout />;
   }
 
   // Default: Marcus / short-arc layout
