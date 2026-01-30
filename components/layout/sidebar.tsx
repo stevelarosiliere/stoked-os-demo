@@ -13,12 +13,14 @@ import {
   Settings,
   GraduationCap,
   Heart,
+  UserCircle,
 } from "lucide-react";
 
 const navItems = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/partners", label: "Partners", icon: Building2 },
   { href: "/programs", label: "Programs", icon: BookOpen },
+  { href: "/youth", label: "Youth", icon: UserCircle },
   { href: "/coaches", label: "Coaches", icon: Users },
   { href: "/training", label: "Training", icon: GraduationCap },
   { href: "/mentors", label: "Mentors", icon: Heart },

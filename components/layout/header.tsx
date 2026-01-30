@@ -7,6 +7,7 @@ const pageTitles: Record<string, string> = {
   "/": "Executive Dashboard",
   "/partners": "Partner Schools",
   "/programs": "Programs",
+  "/youth": "Youth Participants",
   "/coaches": "Coach Management",
   "/training": "Mentor Training",
   "/mentors": "Mentor Network",
