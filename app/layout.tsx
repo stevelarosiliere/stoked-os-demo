@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Sidebar } from "@/components/layout/sidebar";
-import { Header } from "@/components/layout/header";
+import { AppShell } from "@/components/layout/app-shell";
 
 export const metadata: Metadata = {
   title: "STOKED OS — Mentoring Organization Operating System",
@@ -22,11 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-body antialiased">
-        <Sidebar />
-        <div className="ml-[240px] min-h-screen bg-[#F1F5F9]">
-          <Header />
-          <main className="p-8">{children}</main>
-        </div>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );
